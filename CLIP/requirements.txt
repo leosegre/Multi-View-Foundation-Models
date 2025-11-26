@@ -1,6 +1,0 @@
-ftfy
-packaging
-regex
-tqdm
-torch
-torchvision
