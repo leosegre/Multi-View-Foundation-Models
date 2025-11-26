@@ -5,7 +5,7 @@ By *[Or Hirschorn](https://scholar.google.co.il/citations?user=GgFuT_QAAAAJ&hl=i
 This repo is the official implementation of "[Multi-View Foundation Models](https://arxiv.org/pdf/TBD.pdf)" (Link TBD).
 
 <p align="center">
-<img src="images/framework.jpg" width="384">
+<img src="images/framework.jpg" width="1200">
 </p>
 
 ## Introduction
