@@ -1,0 +1,15 @@
+einops
+opencv-python
+kornia
+albumentations
+loguru
+tqdm
+matplotlib
+h5py
+wandb
+timm
+poselib
+peft
+tensorboard
+scikit-learn
+xformers

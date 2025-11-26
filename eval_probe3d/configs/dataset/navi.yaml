@@ -1,0 +1,7 @@
+_target_: eval_probe3d.evals.datasets.navi3D.NAVI3D
+path: data/navi_v1
+image_mean: imagenet
+augment_train: False
+bbox_crop: True
+n_dim: 4
+world_space_normals: True  # Use world-space normals for 3D-consistent multi-view training (DINO3D advantage)

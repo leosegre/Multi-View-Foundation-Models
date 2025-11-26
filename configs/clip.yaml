@@ -1,0 +1,38 @@
+# Dataset Parameters
+min_overlap: 0.0
+max_overlap: 1.0
+max_num_pairs: 100_000
+max_correspondences: 128
+n_dim: 4
+image_size: [512, 512]
+dataset_size: 1000
+
+
+# --- Training Parameters ---
+batch_size: 4
+lr: 1e-4
+weight_decay: 0.01
+num_epochs: 12
+num_workers: 2
+scheduler: linear
+dense_lamda: 1
+cl_lamda: 0.0
+reg_lamda: 0.1
+optim_strategy: location  # [location, similarity]
+loss_type: L1
+argsoftmax_beta: 0.02
+
+# --- Model Parameters ---
+model_name: ViT-B/16
+model_output_type: dense
+plucker_emb_dim: 128
+disable_plucker: False
+pe_embedding_strategy: concat
+pe_embedding_dim: 128
+use_sa_cls_token: False
+disable_dino_pe: False
+use_sa_ffn: True
+spatial_reduction: False
+use_lora: True
+lora_r: 32
+lora_alpha: 32
