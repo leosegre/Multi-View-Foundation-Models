@@ -191,7 +191,11 @@
                   </div>
 
                   <div class="is-size-5 publication-authors">
-                    <span class="author-block">To be updated<br>Preprint 2025</span>
+                    <span class="author-block">
+                        <a href="https://scholar.google.co.il/citations?user=GgFuT_QAAAAJ&hl=iw&oi=ao">*Or Hirschorn</a>,
+                        <a href="https://scholar.google.com/citations?user=A7FWhoIAAAAJ&hl=iw">*Leo Segre</a> and
+                        <a href="https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ">Shai Avidan</a>
+                        <br>Preprint 2025</span>
                   </div>
 
                   <!-- <div class="column has-text-centered">
@@ -229,7 +233,7 @@
               </span>
 
                   <span class="link-block">
-                    <a href="https://github.com/orhir/Multi-View-Foundation-Models" target="_blank"
+                    <a href="https://github.com/leosegre/Multi-View-Foundation-Models" target="_blank"
                     class="external-link button is-normal is-rounded is-dark">
                     <span class="icon">
                       <i class="fab fa-github"></i>
@@ -287,102 +291,167 @@ As leading examples, we show surface normal estimation and multi-view segmentati
 <!-- End paper abstract -->
 
 
-<!-- Image carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <div id="results-carousel" class="carousel results-carousel">
-       <div class="item">
-        <!-- TODO: Replace with your research result images -->
-        <img src="static/images/carousel1.jpg" alt="First research result visualization" loading="lazy"/>
-        <!-- TODO: Replace with description of this result -->
-        <h2 class="subtitle has-text-centered">
-          First image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="Second research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-          Second image description.
-        </h2>
-      </div>
-      <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>
-        <h2 class="subtitle has-text-centered">
-         Third image description.
-       </h2>
-     </div>
-     <div class="item">
-      <!-- Your image here -->
-      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>
-      <h2 class="subtitle has-text-centered">
-        Fourth image description.
-      </h2>
+      <!-- Results – static sections instead of carousel -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Block 1 -->
+    <div class="content has-text-centered">
+      <h2 class="title is-3">Multi-View Foundation Model Architecture</h2>
+      <figure class="image">
+        <img src="static/images/framework.jpg"
+             alt="First research result visualization"
+             loading="lazy">
+      </figure>
+      <p class="subtitle mt-3 has-text-left">
+        Our architecture augments a pre-trained 2D foundation model with <strong>multi-view spatial adapters (MV-Adapters)</strong> inserted after each Transformer block.
+          Given multiple input images and their camera poses, the model extracts per-view features and fuses them using <strong>3D-aware adapter layers</strong> conditioned on ray-based pose embeddings.
+          This produces <strong>geometry-consistent feature maps</strong> across all views without requiring an explicit 3D reconstruction.
+      </p>
     </div>
-  </div>
-</div>
-</div>
-</section>
-<!-- End image carousel -->
 
+    <hr>
 
-
-
-<!-- Youtube video -->
-<section class="hero is-small is-light">
-  <div class="hero-body">
-    <div class="container">
-      <!-- Paper video. -->
-      <h2 class="title is-3">Video Presentation</h2>
-      <div class="columns is-centered has-text-centered">
-        <div class="column is-four-fifths">
-          
-          <div class="publication-video">
-            <!-- TODO: Replace with your YouTube video ID -->
-            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-          </div>
-        </div>
-      </div>
+    <!-- Block 2 -->
+    <div class="content has-text-centered">
+      <h2 class="title is-3">Feature consistency across views</h2>
+      <figure class="image">
+        <img src="static/images/corr_example.jpg"
+             alt="Second research result visualization"
+             loading="lazy">
+      </figure>
+      <p class="subtitle mt-3 has-text-left">
+        Numbered markers denote query points in the first image, with dashed lines showing their matching features in the other views. MV-DINOv2 maintains consistent correspondences that converge to the same 3D points, whereas base DINOv2 suffers from geometric drift across viewpoints.
+      </p>
     </div>
-  </div>
-</section>
-<!-- End youtube video -->
 
+    <hr>
 
-<!-- Video carousel -->
-<section class="hero is-small">
-  <div class="hero-body">
-    <div class="container">
-      <h2 class="title is-3">Another Carousel</h2>
-      <div id="results-carousel" class="carousel results-carousel">
-        <div class="item item-video1">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel1.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video2">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel2.mp4" type="video/mp4">
-          </video>
-        </div>
-        <div class="item item-video3">
-          <!-- TODO: Add poster image for better preview -->
-          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">
-            <!-- Your video file here -->
-            <source src="static/videos/carousel3.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
+    <!-- Block 3 -->
+    <div class="content has-text-centered">
+      <h2 class="title is-3">3D Structure Embedding</h2>
+      <figure class="image">
+        <img src="static/images/delta_dino.png"
+             alt="Third research result visualization"
+             loading="lazy">
+      </figure>
+      <p class="subtitle mt-3 has-text-left">
+          <strong>Left:</strong> PCA visualization of MV-DINOv2 features showing clear semantic structure across scenes.
+          <br><strong>Right:</strong> PCA visualization of the difference between MV-DINOv2 and the base model’s features, revealing a strong 3D positional pattern - indicating that the model encodes geometric information while preserving the base model’s semantic space.
+      </p>
+    </div>
+
+    <hr>
+
+    <!-- Block 4 -->
+    <div class="content has-text-centered">
+      <h2 class="title is-3">Quantitative Results</h2>
+      <figure class="image">
+        <img src="static/images/results.png"
+             alt="Fourth research result visualization"
+             loading="lazy">
+      </figure>
+      <p class="subtitle mt-3 has-text-left">
+Our method delivers consistently stronger multi-view feature consistency across datasets and foundation models, while remaining closely aligned with each model’s original representation.      </p>
     </div>
   </div>
 </section>
-<!-- End video carousel -->
+
+<!--&lt;!&ndash; Image carousel &ndash;&gt;-->
+<!--<section class="hero is-small">-->
+<!--  <div class="hero-body">-->
+<!--    <div class="container">-->
+<!--      <div id="results-carousel" class="carousel results-carousel">-->
+<!--       <div class="item">-->
+<!--        &lt;!&ndash; TODO: Replace with your research result images &ndash;&gt;-->
+<!--        <img src="static/images/framework.jpg" alt="First research result visualization" loading="lazy"/>-->
+<!--        &lt;!&ndash; TODO: Replace with description of this result &ndash;&gt;-->
+<!--        <h2 class="subtitle has-text-centered">-->
+<!--          First image description.-->
+<!--        </h2>-->
+<!--      </div>-->
+<!--      <div class="item">-->
+<!--        &lt;!&ndash; Your image here &ndash;&gt;-->
+<!--        <img src="static/images/corr_example.jpg" alt="Second research result visualization" loading="lazy"/>-->
+<!--        <h2 class="subtitle has-text-centered">-->
+<!--          Second image description.-->
+<!--        </h2>-->
+<!--      </div>-->
+<!--      <div class="item">-->
+<!--        &lt;!&ndash; Your image here &ndash;&gt;-->
+<!--        <img src="static/images/carousel3.jpg" alt="Third research result visualization" loading="lazy"/>-->
+<!--        <h2 class="subtitle has-text-centered">-->
+<!--         Third image description.-->
+<!--       </h2>-->
+<!--     </div>-->
+<!--     <div class="item">-->
+<!--      &lt;!&ndash; Your image here &ndash;&gt;-->
+<!--      <img src="static/images/carousel4.jpg" alt="Fourth research result visualization" loading="lazy"/>-->
+<!--      <h2 class="subtitle has-text-centered">-->
+<!--        Fourth image description.-->
+<!--      </h2>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</section>-->
+<!--&lt;!&ndash; End image carousel &ndash;&gt;-->
+
+
+
+
+<!--&lt;!&ndash; Youtube video &ndash;&gt;-->
+<!--<section class="hero is-small is-light">-->
+<!--  <div class="hero-body">-->
+<!--    <div class="container">-->
+<!--      &lt;!&ndash; Paper video. &ndash;&gt;-->
+<!--      <h2 class="title is-3">Video Presentation</h2>-->
+<!--      <div class="columns is-centered has-text-centered">-->
+<!--        <div class="column is-four-fifths">-->
+<!--          -->
+<!--          <div class="publication-video">-->
+<!--            &lt;!&ndash; TODO: Replace with your YouTube video ID &ndash;&gt;-->
+<!--            <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+<!--&lt;!&ndash; End youtube video &ndash;&gt;-->
+
+
+<!--&lt;!&ndash; Video carousel &ndash;&gt;-->
+<!--<section class="hero is-small">-->
+<!--  <div class="hero-body">-->
+<!--    <div class="container">-->
+<!--      <h2 class="title is-3">Another Carousel</h2>-->
+<!--      <div id="results-carousel" class="carousel results-carousel">-->
+<!--        <div class="item item-video1">-->
+<!--          &lt;!&ndash; TODO: Add poster image for better preview &ndash;&gt;-->
+<!--          <video poster="" id="video1" controls muted loop height="100%" preload="metadata">-->
+<!--            &lt;!&ndash; Your video file here &ndash;&gt;-->
+<!--            <source src="static/videos/carousel1.mp4" type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-video2">-->
+<!--          &lt;!&ndash; TODO: Add poster image for better preview &ndash;&gt;-->
+<!--          <video poster="" id="video2" controls muted loop height="100%" preload="metadata">-->
+<!--            &lt;!&ndash; Your video file here &ndash;&gt;-->
+<!--            <source src="static/videos/carousel2.mp4" type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--        <div class="item item-video3">-->
+<!--          &lt;!&ndash; TODO: Add poster image for better preview &ndash;&gt;-->
+<!--          <video poster="" id="video3" controls muted loop height="100%" preload="metadata">-->
+<!--            &lt;!&ndash; Your video file here &ndash;&gt;-->
+<!--            <source src="static/videos/carousel3.mp4" type="video/mp4">-->
+<!--          </video>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</section>-->
+<!--&lt;!&ndash; End video carousel &ndash;&gt;-->
 
 
 
@@ -404,7 +473,7 @@ As leading examples, we show surface normal estimation and multi-view segmentati
   author={To be updated},
   journal={Preprint},
   year={2025},
-  url={https://orhir.github.io/Multi-View-Foundation-Models/}
+  url={https://leosegre.github.io/Multi-View-Foundation-Models/}
 }</code></pre>
     </div>
 </section>
@@ -434,6 +503,6 @@ As leading examples, we show surface normal estimation and multi-view segmentati
 <!-- You can add a tracker to track page visits by creating an account at statcounter.com -->
 
     <!-- End of Statcounter Code -->
-
+</main>
   </body>
   </html>
