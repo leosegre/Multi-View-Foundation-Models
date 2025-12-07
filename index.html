@@ -92,7 +92,58 @@
   <script defer src="static/js/bulma-carousel.min.js"></script>
   <script defer src="static/js/bulma-slider.min.js"></script>
   <script defer src="static/js/index.js"></script>
-  
+  <script src="static/js/video_comparison.js"></script>
+  <script>
+    // Model switching functionality
+    const modelVideos = {
+      dinov2: {
+        garden: 'static/images/compare/dinov2/dinov2_vits14_garden_shared_pca_side_by_side.mp4',
+        kitchen: 'static/images/compare/dinov2/dinov2_vits14_kitchen_shared_pca_side_by_side.mp4',
+        gardenPca: 'static/images/compare/dinov2/dinov2_vits14_garden_mv_pca_only.mp4',
+        kitchenPca: 'static/images/compare/dinov2/dinov2_vits14_kitchen_mv_pca_only.mp4'
+      },
+      sam: {
+        garden: 'static/images/compare/sam/sam_vit_b_garden_shared_pca_side_by_side.mp4',
+        kitchen: 'static/images/compare/sam/sam_vit_b_kitchen_shared_pca_side_by_side.mp4',
+        gardenPca: 'static/images/compare/sam/sam_vit_b_garden_mv_pca_only.mp4',
+        kitchenPca: 'static/images/compare/sam/sam_vit_b_kitchen_mv_pca_only.mp4'
+      },
+      clip: {
+        garden: 'static/images/compare/clip/clip_ViT-B_16_garden_shared_pca_side_by_side.mp4',
+        kitchen: 'static/images/compare/clip/clip_ViT-B_16_kitchen_shared_pca_side_by_side.mp4',
+        gardenPca: 'static/images/compare/clip/clip_ViT-B_16_garden_mv_pca_only.mp4',
+        kitchenPca: 'static/images/compare/clip/clip_ViT-B_16_kitchen_mv_pca_only.mp4'
+      }
+    };
+
+    function switchModel(model) {
+      // Update video sources
+      const gardenVideo = document.getElementById('garden');
+      const kitchenVideo = document.getElementById('kitchen');
+      const gardenPcaVideo = document.getElementById('gardenPca');
+      const kitchenPcaVideo = document.getElementById('kitchenPca');
+      
+      gardenVideo.src = modelVideos[model].garden;
+      kitchenVideo.src = modelVideos[model].kitchen;
+      gardenPcaVideo.src = modelVideos[model].gardenPca;
+      kitchenPcaVideo.src = modelVideos[model].kitchenPca;
+      
+      // Reload videos - this will trigger onplay event
+      gardenVideo.load();
+      kitchenVideo.load();
+      gardenPcaVideo.load();
+      kitchenPcaVideo.load();
+      
+      // Update button states
+      document.querySelectorAll('.model-selection-buttons .button').forEach(btn => {
+        btn.classList.remove('is-selected', 'is-primary');
+        btn.classList.add('is-light');
+      });
+      document.querySelector(`[data-model="${model}"]`).classList.remove('is-light');
+      document.querySelector(`[data-model="${model}"]`).classList.add('is-selected', 'is-primary');
+    }
+  </script>
+
   <!-- Structured Data for Academic Papers -->
   <script type="application/ld+json">
   {
@@ -211,6 +262,21 @@
                     <!-- <span class="link-block">
                       <a href="static/pdfs/supplementary_material.pdf" target="_blank"
                       class="external-link button is-normal is-rounded is-dark">
+                      <div class="content has-text-centered" style="margin-top: 2rem;">
+                        <h3 class="title is-4">PCA-only outputs (no slider)</h3>
+                        <div class="columns is-centered" style="margin-top: 1rem;">
+                          <div class="column is-half">
+                            <div class="video-compare-container" id="gardenPcaDiv">
+                              <video class="video" id="gardenPca" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_mv_pca_only.mp4"></video>
+                            </div>
+                          </div>
+                          <div class="column is-half">
+                            <div class="video-compare-container" id="kitchenPcaDiv">
+                              <video class="video" id="kitchenPca" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_mv_pca_only.mp4"></video>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <span class="icon">
                         <i class="fas fa-file-pdf"></i>
                       </span>
@@ -249,21 +315,82 @@
 
 
 <!-- Teaser video-->
-<!-- <section class="hero teaser"> -->
-  <!-- <div class="container is-max-desktop"> -->
-    <!-- <div class="hero-body"> -->
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
       <!-- TODO: Replace with your teaser video -->
       <!-- <video poster="" id="tree" autoplay controls muted loop height="100%" preload="metadata"> -->
         <!-- TODO: Add your video file path here -->
         <!-- <source src="static/videos/banner_video.mp4" type="video/mp4"> -->
       <!-- </video> -->
       <!-- TODO: Replace with your video description -->
-      <!-- <h2 class="subtitle has-text-centered"> -->
-        <!-- Aliquam vitae elit ullamcorper tellus egestas pellentesque. Ut lacus tellus, maximus vel lectus at, placerat pretium mi. Maecenas dignissim tincidunt vestibulum. Sed consequat hendrerit nisl ut maximus.  -->
-      <!-- </h2> -->
-    <!-- </div> -->
-  <!-- </div> -->
-<!-- </section> -->
+      <h2 class="subtitle has-text-centered">
+          <b>TLDR:</b> We introduce Multi-View Foundation Models (DINO, SAM, CLIP)  for learning from multi-view data to advance 3D understanding, reconstruction, and cross-view reasoning.
+      </h2>
+    </div>
+  </div>
+  
+    <!-- Interactive Comparison with Model Selection -->
+    <div class="content has-text-centered">
+      
+      <!-- Model Selection Buttons -->
+      <div class="model-selection-buttons" style="margin-bottom: 2rem;">
+        <button class="button is-primary is-selected" data-model="dinov2" onclick="switchModel('dinov2')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>DINOv2</span>
+        </button>
+        <button class="button is-info" data-model="sam" onclick="switchModel('sam')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>SAM</span>
+        </button>
+        <button class="button is-success" data-model="clip" onclick="switchModel('clip')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>CLIP</span>
+        </button>
+      </div>
+
+
+      <!-- Side-by-side comparison containers -->
+      <div class="columns is-centered" style="margin-top: 2rem;">
+        <!-- Garden Scene -->
+        <div class="column is-narrow">
+          <div class="video-compare-container" id="gardenDiv">
+            <video class="video" id="garden" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_shared_pca_side_by_side.mp4" onplay="resizeAndPlay(this)"></video>
+            <canvas height=0 class="videoMerge" id="gardenMerge"></canvas>
+          </div>
+        </div>
+
+        <!-- Kitchen Scene -->
+        <div class="column is-narrow">
+          <div class="video-compare-container" id="kitchenDiv">
+            <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_shared_pca_side_by_side.mp4" onplay="resizeAndPlay(this)"></video>
+            <canvas height=0 class="videoMerge" id="kitchenMerge"></canvas>
+          </div>
+        </div>
+      </div>
+            <p class="subtitle mt-3 has-text-center">
+        Slide to compare: baseline predictions on the left, our multi-view refinement on the right.
+      </p>
+
+            <!-- <div class="content has-text-centered" style="margin-top: 2rem;">
+              <h3 class="title is-4">Output Features</h3>
+              <div class="columns is-centered" style="margin-top: 1rem;">
+                <div class="column is-narrow">
+                  <div class="video-compare-container" id="gardenPcaDiv">
+                    <video class="video" id="gardenPca" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_mv_pca_only.mp4"></video>
+                  </div>
+                </div>
+                <div class="column is-narrow">
+                  <div class="video-compare-container" id="kitchenPcaDiv">
+                    <video class="video" id="kitchenPca" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_mv_pca_only.mp4"></video>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+    </div>
+    <br>
+
+</section>
 <!-- End teaser video -->
 
 <!-- Paper abstract -->
@@ -291,6 +418,7 @@ As leading examples, we show surface normal estimation and multi-view segmentati
       <!-- Results – static sections instead of carousel -->
 <section class="section">
   <div class="container is-max-desktop">
+
     <!-- Block 1 -->
     <div class="content has-text-centered">
       <h2 class="title is-3">Multi-View Foundation Model Architecture</h2>
@@ -308,7 +436,7 @@ As leading examples, we show surface normal estimation and multi-view segmentati
 
     <hr>
 
-    <!-- Block 2 -->
+    <!-- Feature consistency across views -->
     <div class="content has-text-centered">
       <h2 class="title is-3">Feature consistency across views</h2>
       <figure class="image">
@@ -328,8 +456,10 @@ As leading examples, we show surface normal estimation and multi-view segmentati
       <h2 class="title is-3">3D Structure Embedding</h2>
       <figure class="image">
         <img src="static/images/delta_dino.png"
+            style="max-width: 500px; margin-left: auto; margin-right: auto;"
              alt="Third research result visualization"
-             loading="lazy">
+             loading="lazy"
+             >
       </figure>
       <p class="subtitle mt-3 has-text-left">
           <strong>Left:</strong> PCA visualization of MV-DINOv2 features showing clear semantic structure across scenes.
@@ -475,7 +605,6 @@ Our method delivers consistently stronger multi-view feature consistency across 
     </div>
 </section>
 <!--End BibTex citation -->
-
 
   <footer class="footer">
   <div class="container">

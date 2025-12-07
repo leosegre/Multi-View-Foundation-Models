@@ -749,5 +749,63 @@ a:focus {
   }
 }
 
+/* Video Comparison Slider Styles */
 
+.video-compare-container {
+  width: 250px;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: block;
+  line-height: 0;
+}
 
+.video {
+  width: 100%;
+  height: auto;
+  position: relative;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+.videoMerge {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  background-size: cover;
+  cursor: ew-resize;
+}
+
+.cropped-video{
+    width: 100%;
+    overflow:hidden;
+    display:block;
+}
+
+/* Model Selection Buttons */
+.model-selection-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.model-selection-buttons .button {
+  min-width: 120px;
+  font-weight: 600;
+}
+
+.model-selection-buttons .button.is-selected {
+  box-shadow: var(--shadow-lg);
+}
+
+.model-selection-buttons .button:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
