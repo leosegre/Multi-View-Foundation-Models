@@ -761,7 +761,7 @@ a:focus {
 /* Video Comparison Slider Styles */
 
 .video-compare-container {
-  width: clamp(320px, 38vw, 430px);
+  width: clamp(160px, 19vw, 215px);
   max-width: 100%;
   margin: 0 auto;
   position: relative;
