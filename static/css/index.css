@@ -103,6 +103,15 @@ body {
   padding: 4rem 1.5rem;
 }
 
+.hero:first-of-type .hero-body {
+  padding-bottom: 1.75rem;
+}
+
+.hero.teaser .hero-body {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+
 .teaser .hero-body {
   padding-top: 2rem;
   padding-bottom: 4rem;
@@ -752,7 +761,7 @@ a:focus {
 /* Video Comparison Slider Styles */
 
 .video-compare-container {
-  width: 400px;
+  width: clamp(320px, 44vw, 460px);
   max-width: 100%;
   margin: 0 auto;
   position: relative;
