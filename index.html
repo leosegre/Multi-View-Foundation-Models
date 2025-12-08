@@ -335,15 +335,15 @@
       
       <!-- Model Selection Buttons -->
       <div class="model-selection-buttons" style="margin-bottom: 2rem;">
-        <button class="button is-primary is-selected" data-model="dinov2" onclick="switchModel('dinov2')">
+        <button class="button is-light" data-model="dinov2" onclick="switchModel('dinov2')">
           <span class="icon"><i class="fas fa-cube"></i></span>
           <span>DINOv2</span>
         </button>
-        <button class="button is-info" data-model="sam" onclick="switchModel('sam')">
+        <button class="button is-light" data-model="sam" onclick="switchModel('sam')">
           <span class="icon"><i class="fas fa-cube"></i></span>
           <span>SAM</span>
         </button>
-        <button class="button is-success" data-model="clip" onclick="switchModel('clip')">
+        <button class="button is-success is-selected" data-model="clip" onclick="switchModel('clip')">
           <span class="icon"><i class="fas fa-cube"></i></span>
           <span>CLIP</span>
         </button>
@@ -355,7 +355,7 @@
         <!-- Garden Scene -->
         <div class="column is-narrow">
           <div class="video-compare-container" id="gardenDiv">
-            <video class="video" id="garden" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_shared_pca_side_by_side.mp4" onplay="resizeAndPlay(this)"></video>
+            <video class="video" id="garden" loop playsinline autoPlay muted src="static/images/compare/clip/clip_ViT-B_16_garden_shared_pca_side_by_side.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="gardenMerge"></canvas>
           </div>
         </div>
@@ -363,7 +363,7 @@
         <!-- Kitchen Scene -->
         <div class="column is-narrow">
           <div class="video-compare-container" id="kitchenDiv">
-            <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_shared_pca_side_by_side.mp4" onplay="resizeAndPlay(this)"></video>
+            <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/clip/clip_ViT-B_16_kitchen_shared_pca_side_by_side.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="kitchenMerge"></canvas>
           </div>
         </div>
