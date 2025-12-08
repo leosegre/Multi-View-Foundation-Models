@@ -116,6 +116,12 @@
       }
     };
 
+    const modelColors = {
+      dinov2: 'is-primary',
+      sam: 'is-info',
+      clip: 'is-success'
+    };
+
     function switchModel(model) {
       // Update video sources
       const gardenVideo = document.getElementById('garden');
@@ -136,11 +142,11 @@
       
       // Update button states
       document.querySelectorAll('.model-selection-buttons .button').forEach(btn => {
-        btn.classList.remove('is-selected', 'is-primary');
-        btn.classList.add('is-light');
+        const btnModel = btn.dataset.model;
+        btn.classList.remove('is-selected', modelColors[btnModel]);
+        btn.classList.add(modelColors[btnModel]);
       });
-      document.querySelector(`[data-model="${model}"]`).classList.remove('is-light');
-      document.querySelector(`[data-model="${model}"]`).classList.add('is-selected', 'is-primary');
+      document.querySelector(`[data-model="${model}"]`).classList.add('is-selected');
     }
   </script>
 
@@ -335,17 +341,17 @@
       
       <!-- Model Selection Buttons -->
       <div class="model-selection-buttons" style="margin-bottom: 2rem;">
-        <button class="button is-light" data-model="dinov2" onclick="switchModel('dinov2')">
-          <span class="icon"><i class="fas fa-cube"></i></span>
-          <span>DINOv2</span>
-        </button>
-        <button class="button is-light" data-model="sam" onclick="switchModel('sam')">
-          <span class="icon"><i class="fas fa-cube"></i></span>
-          <span>SAM</span>
-        </button>
         <button class="button is-success is-selected" data-model="clip" onclick="switchModel('clip')">
           <span class="icon"><i class="fas fa-cube"></i></span>
           <span>CLIP</span>
+        </button>
+        <button class="button is-primary" data-model="dinov2" onclick="switchModel('dinov2')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>DINOv2</span>
+        </button>
+        <button class="button is-info" data-model="sam" onclick="switchModel('sam')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>SAM</span>
         </button>
       </div>
 
