@@ -818,3 +818,25 @@ a:focus {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
+
+/* Comparison caption styling */
+.baseline-text {
+  background: var(--background-accent);
+  color: var(--text-primary);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  display: inline-block;
+  margin: 0 0.25rem;
+}
+
+.mv-text {
+  background: var(--gradient-accent);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--border-radius);
+  font-weight: 700;
+  display: inline-block;
+  margin: 0 0.25rem;
+  box-shadow: var(--shadow-sm);
+}
