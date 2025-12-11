@@ -11,7 +11,7 @@ jobs/*
 *.pth
 #wandb*
 data/*
-demo_dataset/*
+demo_data/*
 experiments/*
 visualizations/*
 results/*
