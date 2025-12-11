@@ -9,7 +9,7 @@ from tqdm import tqdm
 from einops import rearrange
 from collections import defaultdict
 
-from CLIP.clip.utils import get_clip_model
+# from CLIP.clip.utils import get_clip_model
 from dino3d.datasets.colmapdata import COLMAPBuilder
 from dino3d.models.dino3d import DINO3D
 from dino3d.models.base_dino import DINO
@@ -22,11 +22,27 @@ from FiT3D.utils import get_intermediate_layers
 from dino3d.models.utils.utils import get_dino3d_model
 from dino3d.train.train import fix_random_seeds, get_dataloaders, get_train_dataloader, run_iter, log_pca, \
     get_scheduler, load_config, SafeNamespace
-from eval.linear_evaluate_fit3d import FiT3D
+from FiT3D.linear_evaluate_fit3d import FiT3D
 from torch.utils.data import ConcatDataset
 from OpenClip.create_open_clip import open_clip_load
-from save_images import save_everything
+# from save_images import save_everything
 
+# Try to import huggingface_hub, install if missing
+try:
+    from huggingface_hub import snapshot_download
+except ImportError:
+    print("📦 Installing huggingface_hub...")
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "huggingface_hub"])
+    from huggingface_hub import snapshot_download
+
+
+pretrained_checkpoints = {
+    "dinov2_reg": "Leoseg/dinov2_reg",
+    "dinov2_reg_no_plucker": "Leoseg/dinov2_reg_no_plucker",
+    "dinov3": "Leoseg/dinov3",
+    "clip": "Leoseg/clip",
+    "sam": "Leoseg/sam",
+}
 
 class SafeNamespace(argparse.Namespace):
     def __getattr__(self, name):
@@ -428,7 +444,7 @@ def evaluate(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--exp_directory", default="experiments", type=str)
-    parser.add_argument("--exp_name", default=None, type=str, help="Name of the experiment for logging")
+    parser.add_argument("--exp_name", default="dinov2_reg", type=str, help="Name of the experiment for logging")
     parser.add_argument("--scene", default=None, type=str)
     parser.add_argument("--colmap_path", default='data/', type=str, help="Path to COLMAP data")
     parser.add_argument("--fit3d", action="store_true", help="Use FiT3D model for feature extraction")
@@ -448,7 +464,20 @@ if __name__ == "__main__":
     parser.add_argument("--viewpoint_analysis", action="store_true",
                         help="Analyze results as a function of viewpoint angle (only works with n_dims=2)")
     parser.add_argument("--image_size", default=518, type=int, help="Image size")
+    parser.add_argument("--load_pretrained", action="store_true", help="Load pretrained weights")
     args, _ = parser.parse_known_args()
+
+    if args.load_pretrained:
+        # --- Step 1: Download Model ---
+        MODEL_REPO = pretrained_checkpoints[args.exp_name]
+        print(f"\n⬇️  Downloading Model: {MODEL_REPO}...")
+        # This downloads into {experiments_dir}/{experiment_name}/
+        snapshot_download(
+            repo_id=MODEL_REPO,
+            local_dir=args.exp_directory,
+            local_dir_use_symlinks=False  # Download real files, not links
+        )
+
 
     # Load args.yaml from exp_directory
     args_yaml_path = os.path.join(args.exp_directory, args.exp_name, "args.yaml")

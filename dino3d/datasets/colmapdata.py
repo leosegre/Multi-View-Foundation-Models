@@ -127,6 +127,7 @@ class COLMAPScene(torch.utils.data.Dataset):
         normalize_plucker=False,
         cross_plucker=False,
         clip_norm=False,
+        limit_corrs=None,
         **kwargs
     ):
         print(f"Loading COLMAP scene from '{colmap_root}'")
@@ -212,22 +213,38 @@ class COLMAPScene(torch.utils.data.Dataset):
             for _ in range(self.__len__())
         ])
 
-        # Check that all matches have at least max_correspondences
-        chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
-        while not np.all(chosen_idx_ok):
-            for idx in np.argwhere(~chosen_idx_ok).flatten():
-                num_matches = 0
-                chosen_ids = self.image_ids[self.chosen_idx[idx]]
-                for id1, id2 in combinations(chosen_ids, 2):
-                    num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
+        if limit_corrs == None:
+            # Check that all matches have at least max_correspondences
+            chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
+            while not np.all(chosen_idx_ok):
+                for idx in np.argwhere(~chosen_idx_ok).flatten():
+                    num_matches = 0
+                    chosen_ids = self.image_ids[self.chosen_idx[idx]]
+                    for id1, id2 in combinations(chosen_ids, 2):
+                        num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
+                        if num_matches >= self.max_correspondences:
+                            break
                     if num_matches >= self.max_correspondences:
-                        break
-                if num_matches >= self.max_correspondences:
-                    chosen_idx_ok[idx] = True
-                else:
-                    # If not ok, resample
-                    self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
-
+                        chosen_idx_ok[idx] = True
+                    else:
+                        # If not ok, resample
+                        self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
+        else:
+            # Check that all matches have at most limit_corrs
+            chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
+            while not np.all(chosen_idx_ok):
+                for idx in np.argwhere(~chosen_idx_ok).flatten():
+                    num_matches = 0
+                    chosen_ids = self.image_ids[self.chosen_idx[idx]]
+                    for id1, id2 in combinations(chosen_ids, 2):
+                        num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
+                        if num_matches > limit_corrs:
+                            break
+                    if num_matches <= limit_corrs:
+                        chosen_idx_ok[idx] = True
+                    else:
+                        # If not ok, resample
+                        self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
 
 
     def _build_K(self, cam):

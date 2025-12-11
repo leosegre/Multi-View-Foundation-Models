@@ -85,39 +85,72 @@ def show_similarity_interactive(
     num_queries = len(query_imgs)
     num_feats = len(feat_names)
 
+    # Create a slightly larger figure and grid to host an instruction panel above
     fig, axes = plt.subplots(1 + num_feats, num_queries + 1, figsize=(4 * (num_queries + 1), 4 * (1 + num_feats)))
     for axi in axes.ravel():
         axi.set_axis_off()
 
+    # Add a global title and instruction text above the grid
+    fig.suptitle("Interactive Correspondence Demo", fontsize=18, weight='bold')
+    # Reduce top margin so titles don't collide with thumbnails
+    plt.subplots_adjust(top=0.86, left=0.03, right=0.98, hspace=0.45)
+
     radius = 14 // 2
 
-    # Assign unique colors per feature type
-    color_map = {
-        name: color for name, color in zip(
-            feat_names,
-            [(1, 0, 0, 0.75), (0, 1, 0, 0.75), (0, 0, 1, 0.75), (1, 1, 0, 0.75), (1, 0, 1, 0.75)]
-        )
-    }
+    # Unique color for the clicked support point (distinct from per-feature colors)
+    click_color = (1.0, 1.0, 0.0, 0.95)  # bright yellow
 
-    # Row 0: support and queries
+    # Assign unique colors per feature type (RGBA)
+    palette = [(1, 0, 0, 0.9), (0, 0.6, 0, 0.9), (0, 0.2, 1, 0.9), (1, 0.7, 0, 0.9), (0.7, 0, 1, 0.9)]
+    color_map = {name: palette[i % len(palette)] for i, name in enumerate(feat_names)}
+
+    # Human-friendly feature descriptions used in titles/legend
+    feature_descriptions = {}
+    for name in feat_names:
+        # Map the keys to the canonical model names requested by the user
+        if name == 'base':
+            feature_descriptions[name] = 'DINOv2'
+        elif name == 'ours':
+            feature_descriptions[name] = 'MV-DINOv2'
+        elif name in ('fit3d', 'lora'):
+            feature_descriptions[name] = 'FiT3D'
+        else:
+            feature_descriptions[name] = name
+
+    # Row 0: support and queries (show RGB)
     axes[0, 0].imshow(support_img_np)
-    axes[0, 0].set_title("Support")
+    axes[0, 0].set_title("Support (click here)", fontsize=12)
+    # Add a clear badge over the support image prompting the user to click
+    axes[0, 0].text(
+        0.02,
+        0.98,
+        "CLICK HERE",
+        transform=axes[0, 0].transAxes,
+        fontsize=12,
+        fontweight='bold',
+        color='white',
+        va='top',
+        ha='left',
+        bbox=dict(boxstyle='round,pad=0.3', facecolor='red', alpha=0.9)
+    )
     for i, img in enumerate(query_imgs_np):
         axes[0, i+1].imshow(img)
-        axes[0, i+1].set_title(f"Query {i+1}")
+        axes[0, i+1].set_title(f"Query {i+1} — alternate view", fontsize=12)
 
-    # Unified PCA projections of support features
-    # concatenate support and query into a checkerboard pattern of 2x2
+    # Unified PCA projections of support features (build a checkerboard per feature for visualization)
     checkerboard = {}
     for key in support_feats.keys():
-        # Interpolate all features to the support feature's shape for this key
         H, W = support_shapes[key]
         def interp(feat):
             if feat.shape[1:] != (H, W):
                 return torch.nn.functional.interpolate(feat.unsqueeze(0), size=(H, W), mode='bilinear', align_corners=False).squeeze(0)
             return feat
-        top = torch.cat([support_feats[key], interp(query_feats[0][key])], dim=1)
-        bottom = torch.cat([interp(query_feats[1][key]), interp(query_feats[2][key])], dim=1)
+        # If there are fewer than 3 queries, replicate the first one to fill the checkerboard
+        q0 = query_feats[0][key]
+        q1 = query_feats[1][key] if len(query_feats) > 1 else q0
+        q2 = query_feats[2][key] if len(query_feats) > 2 else q0
+        top = torch.cat([support_feats[key], interp(q0)], dim=1)
+        bottom = torch.cat([interp(q1), interp(q2)], dim=1)
         checkerboard[key] = torch.cat([top, bottom], dim=2)
     support_pca_imgs = shared_pca_projection(checkerboard)
 
@@ -150,6 +183,8 @@ def show_similarity_interactive(
         similarities_by_feat[feat_name] = sims
         query_shapes_by_feat[feat_name] = query_feat_shapes
 
+
+    # initial point acquisition
     pts = np.asarray(plt.ginput(1, timeout=-1, mouse_stop=plt.MouseButton.RIGHT, mouse_pop=None))
     load_size = (support_img_np.shape[0], support_img_np.shape[1])
 
@@ -158,15 +193,16 @@ def show_similarity_interactive(
             axi.clear()
             axi.set_axis_off()
 
+        # redraw base images row
         axes[0, 0].imshow(support_img_np)
+        axes[0, 0].set_title("Support (click here)")
         for i, img in enumerate(query_imgs_np):
             axes[0, i+1].imshow(img)
+            axes[0, i+1].set_title(f"Query {i+1} — alternate view", fontsize=12)
 
-        # Use support feature's H, W for support location
+        # Use support image coordinates for the click
         y_coor, x_coor = int(pts[0, 1]), int(pts[0, 0])
-        # For each feature type, use its support H, W for support location, and query H, W for reshaping
         center = (x_coor, y_coor)
-        axes[0, 0].add_patch(Circle(center, radius, color=(0, 0, 0, 0.4)))
 
         for row_idx, feat_name in enumerate(feat_names):
             color = color_map[feat_name]
@@ -175,24 +211,34 @@ def show_similarity_interactive(
             y_descs_coor = int(y_coor / load_size[0] * H)
             x_descs_coor = int(x_coor / load_size[1] * W)
 
-            # Highlight support location on support RGB
-            axes[0, 0].add_patch(Circle(center, radius, color=color))
-
-            # Show PCA of support feature
+            # Show PCA of support feature in the left column for this row
             axes[row_idx+1, 0].imshow(support_pca_imgs[feat_name])
-            axes[row_idx+1, 0].set_title(f"Support {feat_name}", color=color[:-1])
-            # axes[row_idx+1, 0].add_patch(Rectangle((0, 0), W, H, linewidth=2, edgecolor=color, facecolor='none'))
-            # axes[row_idx+1, 0].add_patch(Circle(center, radius, color=color))
+            axes[row_idx+1, 0].set_title(f"Support — {feature_descriptions[feat_name]}", color=color[:3], fontsize=11)
 
             for i in range(num_queries):
                 axes[0, i+1].imshow(query_imgs_np[i])
                 qh, qw = query_shapes_by_feat[feat_name][i]
                 sim = similarities_by_feat[feat_name][i][y_descs_coor, x_descs_coor]
+                # Normalize similarity and reshape to 2D map
                 sim = torch.softmax(sim, dim=0).view(qh, qw)
                 sim_img = sim.cpu().numpy()
 
-                axes[row_idx+1, i+1].imshow(sim_img, cmap='jet', interpolation='nearest', alpha=0.5, extent=(0, qw, 0, qh))
-                axes[row_idx+1, i+1].set_title(f"{feat_name} Q{i+1}")
+                # Overlay similarity using a perceptually-uniform colormap and alpha
+                # Use origin='upper' with extent=(0, qw, 0, qh). We'll convert heatmap row indices to plotted y coords
+                axes[row_idx+1, i+1].imshow(sim_img, cmap='magma', interpolation='nearest', alpha=0.9, origin='upper', extent=(0, qw, 0, qh))
+                axes[row_idx+1, i+1].set_title(f"{feature_descriptions[feat_name]} - Similarity to Query {i+1}", fontsize=10)
+
+                # Draw a small colorbar for the similarity map (inside the cell)
+                from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+                try:
+                    iax = inset_axes(axes[row_idx+1, i+1], width="5%", height="30%", loc='upper right', borderpad=0.4)
+                    norm = None
+                    # create a colorbar for this single image
+                    plt_color = plt.cm.ScalarMappable(cmap='magma')
+                    plt_color.set_array([])
+                    fig.colorbar(plt_color, cax=iax)
+                except Exception:
+                    pass
 
                 # Best match in query i
                 sim_vec = similarities_by_feat[feat_name][i][y_descs_coor, x_descs_coor]  # (qh*qw,)
@@ -204,12 +250,29 @@ def show_similarity_interactive(
 
                 # Map feature-grid cell center -> query image pixels
                 Hq_img, Wq_img = query_imgs_np[i].shape[:2]
+                # image coordinates use top-left origin, so mapping is straightforward
                 yq_img = (yq_feat + 0.5) * (Hq_img / max(qh, 1))
                 xq_img = (xq_feat + 0.5) * (Wq_img / max(qw, 1))
 
+                # Mark the best-match on the query image (top row) and also on the similarity map
                 axes[0, i + 1].add_patch(Circle((xq_img, yq_img), radius, color=color))
+                # Map query-grid coordinates to similarity-map axes coordinates.
+                # imshow was called with origin='upper' and extent=(0,qw,0,qh).
+                # The plotted y coordinate must be flipped: y_plot = qh - (row + 0.5)
+                x_plot = xq_feat + 0.5
+                y_plot = qh - (yq_feat + 0.5)
+                axes[row_idx+1, i+1].add_patch(Circle((x_plot, y_plot), radius / 4, color=color))
+
+        # Draw the unique clicked-point marker on the support image (topmost)
+        try:
+            # small circle with colored face and dark edge
+            axes[0, 0].add_patch(Circle(center, radius, facecolor=click_color, edgecolor='k', linewidth=1.2))
+        except Exception:
+            # fall back to a simple filled circle if edgecolor not supported
+            axes[0, 0].add_patch(Circle(center, radius, color=click_color))
 
         plt.draw()
+        # wait for next click
         pts = np.asarray(plt.ginput(1, timeout=-1, mouse_stop=plt.MouseButton.RIGHT, mouse_pop=None))
 
 def str2bool(v):
@@ -235,7 +298,7 @@ if __name__ == "__main__":
     parser.add_argument("--latest", action="store_true", help="Use latest checkpoint instead of best")
     parser.add_argument("--lora", action="store_true", help="Use FiT3D model for feature extraction")
     parser.add_argument("--lora_exp_name", default=None, type=str)
-    parser.add_argument("--stride_override", default=None, type=int, help="DINO model stride")
+    parser.add_argument("--stride_override", default=7, type=int, help="DINO model stride")
     parser.add_argument(
         "--override_image_size",
         nargs=2,  # expect exactly two values
@@ -245,6 +308,7 @@ if __name__ == "__main__":
         help="Override image size as W H (e.g., 640 480)",
     )
     parser.add_argument("--split", default="test", type=str, help="Dataset split to use")
+    parser.add_argument("--limit_corrs", default=None, type=int, help="Limit number of correspondences per image pair")
     # ------------------------------------------------------------------------------------------------------------
     # Parse arguments
     # ------------------------------------------------------------------------------------------------------------
@@ -295,6 +359,7 @@ if __name__ == "__main__":
         fit3d_model.eval()
         fit3d_model.to(device)
         fit3d_model.vit.patch_embed.proj.stride = (model.stride, model.stride)
+        fit3d_model.finetuned_model.patch_embed.proj.stride = (model.stride, model.stride)
 
     if args.lora:
         lora_model = get_lora_dino_model(args).to(device)
@@ -316,6 +381,8 @@ if __name__ == "__main__":
         image_size=args.image_size,
         dino_output_type=args.model_output_type,
         split=args.split,
+        limit_corrs=args.limit_corrs,
+        dataset_size=1,
     )[0]
 
     rand_img_idx = random.randint(0, len(test_dataset) - 1)
