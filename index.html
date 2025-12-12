@@ -97,22 +97,22 @@
     // Model switching functionality
     const modelVideos = {
       dinov2: {
-        garden: 'static/images/compare/dinov2/dinov2_vits14_garden_base_vs_mv_individual_pca.mp4',
-        kitchen: 'static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_individual_pca.mp4',
-        aloe: 'static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_individual_pca.mp4',
-        pikachu: 'static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_individual_pca.mp4'
+        garden: 'static/images/compare/dinov2/dinov2_vits14_garden_base_vs_mv_shared_pca.mp4',
+        kitchen: 'static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_shared_pca.mp4',
+        aloe: 'static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_shared_pca.mp4',
+        pikachu: 'static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4'
       },
       sam: {
-        garden: 'static/images/compare/sam/sam_vit_b_garden_base_vs_mv_individual_pca.mp4',
-        kitchen: 'static/images/compare/sam/sam_vit_b_kitchen_base_vs_mv_individual_pca.mp4',
-        aloe: 'static/images/compare/sam/sam_vit_b_aloe_base_vs_mv_individual_pca.mp4',
-        pikachu: 'static/images/compare/sam/sam_vit_b_pikachu_base_vs_mv_individual_pca.mp4'
+        garden: 'static/images/compare/sam/sam_vit_b_garden_base_vs_mv_shared_pca.mp4',
+        kitchen: 'static/images/compare/sam/sam_vit_b_kitchen_base_vs_mv_shared_pca.mp4',
+        aloe: 'static/images/compare/sam/sam_vit_b_aloe_base_vs_mv_shared_pca.mp4',
+        pikachu: 'static/images/compare/sam/sam_vit_b_pikachu_base_vs_mv_shared_pca.mp4'
       },
       clip: {
-        garden: 'static/images/compare/clip/clip_ViT-B_16_garden_base_vs_mv_individual_pca.mp4',
-        kitchen: 'static/images/compare/clip/clip_ViT-B_16_kitchen_base_vs_mv_individual_pca.mp4',
-        aloe: 'static/images/compare/clip/clip_ViT-B_16_aloe_base_vs_mv_individual_pca.mp4',
-        pikachu: 'static/images/compare/clip/clip_ViT-B_16_pikachu_base_vs_mv_individual_pca.mp4'
+        garden: 'static/images/compare/clip/clip_ViT-B_16_garden_base_vs_mv_shared_pca.mp4',
+        kitchen: 'static/images/compare/clip/clip_ViT-B_16_kitchen_base_vs_mv_shared_pca.mp4',
+        aloe: 'static/images/compare/clip/clip_ViT-B_16_aloe_base_vs_mv_shared_pca.mp4',
+        pikachu: 'static/images/compare/clip/clip_ViT-B_16_pikachu_base_vs_mv_shared_pca.mp4'
       }
     };
 
@@ -332,7 +332,7 @@
       <!-- TODO: Replace with your video description -->
       <h2 class="subtitle has-text-centered">
           <b>TLDR:</b> We introduce Multi-View Foundation Models (DINO, SAM, CLIP)  for learning from multi-view data to advance 3D understanding, reconstruction, and cross-view reasoning.
-          <br>          
+          <br> <br>       
           Our multi-view models preserve samantic understanding while introducing consistent geometric representation across views.
       </h2>
     </div>
@@ -367,7 +367,7 @@
         <!-- Garden Scene -->
         <div class="column is-narrow">
           <div class="video-compare-container" id="gardenDiv">
-            <video class="video" id="garden" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_base_vs_mv_individual_pca.mp4" onplay="resizeAndPlay(this)"></video>
+            <video class="video" id="garden" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="gardenMerge"></canvas>
           </div>
         </div>
@@ -375,7 +375,7 @@
         <!-- Kitchen Scene -->
         <div class="column is-narrow">
           <div class="video-compare-container" id="kitchenDiv">
-            <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_individual_pca.mp4" onplay="resizeAndPlay(this)"></video>
+            <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="kitchenMerge"></canvas>
           </div>
         </div>
@@ -383,7 +383,7 @@
         <!-- Aloe Scene -->
         <div class="column is-narrow">
           <div class="video-compare-container" id="aloeDiv">
-            <video class="video" id="aloe" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_individual_pca.mp4" onplay="resizeAndPlay(this)"></video>
+            <video class="video" id="aloe" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="aloeMerge"></canvas>
           </div>
         </div>
@@ -391,7 +391,7 @@
         <!-- Pikachu Scene -->
         <div class="column is-narrow">
           <div class="video-compare-container" id="pikachuDiv">
-            <video class="video" id="pikachu" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_individual_pca.mp4" onplay="resizeAndPlay(this)"></video>
+            <video class="video" id="pikachu" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
             <canvas height=0 class="videoMerge" id="pikachuMerge"></canvas>
           </div>
         </div>
