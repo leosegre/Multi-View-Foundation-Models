@@ -97,22 +97,34 @@
     // Model switching functionality
     const modelVideos = {
       dinov2: {
-        garden: 'static/images/compare/dinov2/dinov2_vits14_garden_base_vs_mv_shared_pca.mp4',
+        fern: 'static/images/compare/dinov2/dinov2_vits14_fern_base_vs_mv_shared_pca.mp4',
         kitchen: 'static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_shared_pca.mp4',
         aloe: 'static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_shared_pca.mp4',
-        pikachu: 'static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4'
+        pikachu: 'static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4',
+        fernOriginal: 'static/images/compare/original/dinov2_vits14_fern_original.mp4',
+        kitchenOriginal: 'static/images/compare/original/dinov2_vits14_kitchen_original.mp4',
+        aloeOriginal: 'static/images/compare/original/dinov2_vits14_aloe_original.mp4',
+        pikachuOriginal: 'static/images/compare/original/dinov2_vits14_pikachu_original.mp4'
       },
       sam: {
-        garden: 'static/images/compare/sam/sam_vit_b_garden_base_vs_mv_shared_pca.mp4',
+        fern: 'static/images/compare/sam/sam_vit_b_fern_base_vs_mv_shared_pca.mp4',
         kitchen: 'static/images/compare/sam/sam_vit_b_kitchen_base_vs_mv_shared_pca.mp4',
         aloe: 'static/images/compare/sam/sam_vit_b_aloe_base_vs_mv_shared_pca.mp4',
-        pikachu: 'static/images/compare/sam/sam_vit_b_pikachu_base_vs_mv_shared_pca.mp4'
+        pikachu: 'static/images/compare/sam/sam_vit_b_pikachu_base_vs_mv_shared_pca.mp4',
+        fernOriginal: 'static/images/compare/original/dinov2_vits14_fern_original.mp4',
+        kitchenOriginal: 'static/images/compare/original/dinov2_vits14_kitchen_original.mp4',
+        aloeOriginal: 'static/images/compare/original/dinov2_vits14_aloe_original.mp4',
+        pikachuOriginal: 'static/images/compare/original/dinov2_vits14_pikachu_original.mp4'
       },
       clip: {
-        garden: 'static/images/compare/clip/clip_ViT-B_16_garden_base_vs_mv_shared_pca.mp4',
+        fern: 'static/images/compare/clip/clip_ViT-B_16_fern_base_vs_mv_shared_pca.mp4',
         kitchen: 'static/images/compare/clip/clip_ViT-B_16_kitchen_base_vs_mv_shared_pca.mp4',
         aloe: 'static/images/compare/clip/clip_ViT-B_16_aloe_base_vs_mv_shared_pca.mp4',
-        pikachu: 'static/images/compare/clip/clip_ViT-B_16_pikachu_base_vs_mv_shared_pca.mp4'
+        pikachu: 'static/images/compare/clip/clip_ViT-B_16_pikachu_base_vs_mv_shared_pca.mp4',
+        fernOriginal: 'static/images/compare/original/dinov2_vits14_fern_original.mp4',
+        kitchenOriginal: 'static/images/compare/original/dinov2_vits14_kitchen_original.mp4',
+        aloeOriginal: 'static/images/compare/original/dinov2_vits14_aloe_original.mp4',
+        pikachuOriginal: 'static/images/compare/original/dinov2_vits14_pikachu_original.mp4'
       }
     };
 
@@ -123,22 +135,36 @@
     };
 
     function switchModel(model) {
-      // Update video sources
-      const gardenVideo = document.getElementById('garden');
+      // Update comparison video sources
+      const fernVideo = document.getElementById('fern');
       const kitchenVideo = document.getElementById('kitchen');
       const aloeVideo = document.getElementById('aloe');
       const pikachuVideo = document.getElementById('pikachu');
       
-      gardenVideo.src = modelVideos[model].garden;
+      // Update original video sources
+      const fernOriginalVideo = document.getElementById('fernOriginal');
+      const kitchenOriginalVideo = document.getElementById('kitchenOriginal');
+      const aloeOriginalVideo = document.getElementById('aloeOriginal');
+      const pikachuOriginalVideo = document.getElementById('pikachuOriginal');
+      
+      fernVideo.src = modelVideos[model].fern;
       kitchenVideo.src = modelVideos[model].kitchen;
       aloeVideo.src = modelVideos[model].aloe;
       pikachuVideo.src = modelVideos[model].pikachu;
+      fernOriginalVideo.src = modelVideos[model].fernOriginal;
+      kitchenOriginalVideo.src = modelVideos[model].kitchenOriginal;
+      aloeOriginalVideo.src = modelVideos[model].aloeOriginal;
+      pikachuOriginalVideo.src = modelVideos[model].pikachuOriginal;
       
-      // Reload videos - this will trigger onplay event
-      gardenVideo.load();
+      // Reload videos - this will trigger onplay event for comparison videos
+      fernVideo.load();
       kitchenVideo.load();
       aloeVideo.load();
       pikachuVideo.load();
+      fernOriginalVideo.load();
+      kitchenOriginalVideo.load();
+      aloeOriginalVideo.load();
+      pikachuOriginalVideo.load();
       
       // Update button states
       document.querySelectorAll('.model-selection-buttons .button').forEach(btn => {
@@ -242,16 +268,18 @@
         <div class="columns is-centered">
           <div class="column has-text-centered">
             <h1 class="title is-1 publication-title">Multi-View Foundation Models</h1>
-            <div class="is-size-5 publication-authors">
-              <!-- Authors to be updated -->
-                  <div class="is-size-5 publication-authors">
-                    <span class="author-block">
-                        <a href="https://orhir.github.io/">*Or Hirschorn</a>,
-                        <a href="https://leosegre.github.io/">*Leo Segre</a> and
-                        <a href="https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ">Shai Avidan</a>
-                        <br>Preprint 2025</span>
-                  </div>
-
+                <div class="is-size-5 publication-authors">
+                  <span class="author-block">
+                      <a href="https://orhir.github.io/">*Or Hirschorn</a>,
+                      <a href="https://leosegre.github.io/">*Leo Segre</a> and
+                      <a href="https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ">Shai Avidan</a>
+                  </span>
+                </div>
+                <span class="author-block"><sup>*</sup>Equal contribution</span>
+                <br><br>
+                <div class="is-size-5 publication-authors">
+                  <span class="author-block">Tel-Aviv University</span> &nbsp &nbsp
+                </div>
                   <!-- <div class="column has-text-centered">
                     <div class="publication-links">
                       <span class="link-block">
@@ -289,7 +317,8 @@
                       <span>Supplementary</span>
                     </a>
                   </span> -->
-
+           <div class="column has-text-centered">
+              <div class="publication-links">
                 <!-- TODO: Update with your arXiv paper ID -->
                 <span class="link-block">
                   <a href="https://arxiv.org/abs/<ARXIV PAPER ID>" target="_blank"
@@ -301,15 +330,17 @@
                 </a>
               </span>
 
-                  <span class="link-block">
-                    <a href="https://github.com/leosegre/Multi-View-Foundation-Models" target="_blank"
-                    class="external-link button is-normal is-rounded is-dark">
-                    <span class="icon">
-                      <i class="fab fa-github"></i>
-                    </span>
-                    <span>Code</span>
-                  </a>
+              <span class="link-block">
+                <a href="https://github.com/leosegre/Multi-View-Foundation-Models" target="_blank"
+                class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <i class="fab fa-github"></i>
                 </span>
+                <span>Code</span>
+              </a>
+            </span>
+              </div>
+           </div>
 
             </div>
           </div>
@@ -322,6 +353,103 @@
 
 <!-- Teaser video-->
 <section class="hero teaser">
+
+    <!-- Interactive Comparison with Model Selection -->
+    <div class="content has-text-centered">
+      
+      <!-- Model Selection Buttons - Temporarily Hidden -->
+      <!-- <div class="model-selection-buttons" style="margin-bottom: 2rem;">
+        <button class="button is-primary is-selected" data-model="dinov2" onclick="switchModel('dinov2')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>DINOv2</span>
+        </button>
+        <button class="button is-info" data-model="sam" onclick="switchModel('sam')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>SAM</span>
+        </button>
+        <button class="button is-success" data-model="clip" onclick="switchModel('clip')">
+          <span class="icon"><i class="fas fa-cube"></i></span>
+          <span>CLIP</span>
+        </button>
+      </div> -->
+
+      <!-- Four-column layout: original videos and feature comparisons -->
+      <div class="columns is-centered is-vcentered" style="margin-top: 2rem;">
+        <!-- Column 1: Fern Original + Feature Comparison -->
+        <div class="column is-narrow">
+          <!-- Original Video -->
+          <div style="margin-bottom: 1.5rem;">
+            <div class="video-compare-container" id="fernOriginalDiv">
+              <video class="video" id="fernOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_fern_original.mp4"></video>
+            </div>
+          </div>
+          <!-- Feature Comparison -->
+          <div>
+            <div class="video-compare-container" id="fernDiv">
+              <video class="video" id="fern" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_fern_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
+              <canvas height=0 class="videoMerge" id="fernMerge"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Kitchen Original + Feature Comparison -->
+        <div class="column is-narrow">
+          <!-- Original Video -->
+          <div style="margin-bottom: 1.5rem;">
+            <div class="video-compare-container" id="kitchenOriginalDiv">
+              <video class="video" id="kitchenOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_kitchen_original.mp4"></video>
+            </div>
+          </div>
+          <!-- Feature Comparison -->
+          <div>
+            <div class="video-compare-container" id="kitchenDiv">
+              <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
+              <canvas height=0 class="videoMerge" id="kitchenMerge"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 3: Aloe Original + Feature Comparison -->
+        <div class="column is-narrow">
+          <!-- Original Video -->
+          <div style="margin-bottom: 1.5rem;">
+            <div class="video-compare-container" id="aloeOriginalDiv">
+              <video class="video" id="aloeOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_aloe_original.mp4"></video>
+            </div>
+          </div>
+          <!-- Feature Comparison -->
+          <div>
+            <div class="video-compare-container" id="aloeDiv">
+              <video class="video" id="aloe" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
+              <canvas height=0 class="videoMerge" id="aloeMerge"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 4: Pikachu Original + Feature Comparison -->
+        <div class="column is-narrow">
+          <!-- Original Video -->
+          <div style="margin-bottom: 1.5rem;">
+            <div class="video-compare-container" id="pikachuOriginalDiv">
+              <video class="video" id="pikachuOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_pikachu_original.mp4"></video>
+            </div>
+          </div>
+          <!-- Feature Comparison -->
+          <div>
+            <div class="video-compare-container" id="pikachuDiv">
+              <video class="video" id="pikachu" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
+              <canvas height=0 class="videoMerge" id="pikachuMerge"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <p class="subtitle mt-4 has-text-center">
+        <span class="baseline-text">Baseline features on the left</span> vs <span class="mv-text">Our multi-view features on the right</span>
+      </p>
+
+    </div>
+    <br>
   <div class="container is-max-desktop">
     <div class="hero-body">
       <!-- TODO: Replace with your teaser video -->
@@ -337,71 +465,6 @@
       </h2>
     </div>
   </div>
-
-
-
-
-  
-    <!-- Interactive Comparison with Model Selection -->
-    <div class="content has-text-centered">
-      
-      <!-- Model Selection Buttons -->
-      <div class="model-selection-buttons" style="margin-bottom: 2rem;">
-        <button class="button is-primary is-selected" data-model="dinov2" onclick="switchModel('dinov2')">
-          <span class="icon"><i class="fas fa-cube"></i></span>
-          <span>DINOv2</span>
-        </button>
-        <button class="button is-info" data-model="sam" onclick="switchModel('sam')">
-          <span class="icon"><i class="fas fa-cube"></i></span>
-          <span>SAM</span>
-        </button>
-        <button class="button is-success" data-model="clip" onclick="switchModel('clip')">
-          <span class="icon"><i class="fas fa-cube"></i></span>
-          <span>CLIP</span>
-        </button>
-      </div>
-
-
-      <!-- Side-by-side comparison containers -->
-      <div class="columns is-centered" style="margin-top: 2rem;">
-        <!-- Garden Scene -->
-        <div class="column is-narrow">
-          <div class="video-compare-container" id="gardenDiv">
-            <video class="video" id="garden" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_garden_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
-            <canvas height=0 class="videoMerge" id="gardenMerge"></canvas>
-          </div>
-        </div>
-
-        <!-- Kitchen Scene -->
-        <div class="column is-narrow">
-          <div class="video-compare-container" id="kitchenDiv">
-            <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
-            <canvas height=0 class="videoMerge" id="kitchenMerge"></canvas>
-          </div>
-        </div>
-
-        <!-- Aloe Scene -->
-        <div class="column is-narrow">
-          <div class="video-compare-container" id="aloeDiv">
-            <video class="video" id="aloe" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
-            <canvas height=0 class="videoMerge" id="aloeMerge"></canvas>
-          </div>
-        </div>
-
-        <!-- Pikachu Scene -->
-        <div class="column is-narrow">
-          <div class="video-compare-container" id="pikachuDiv">
-            <video class="video" id="pikachu" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
-            <canvas height=0 class="videoMerge" id="pikachuMerge"></canvas>
-          </div>
-        </div>
-      </div>
-            <p class="subtitle mt-3 has-text-center">
-        Slide to compare: <span class="baseline-text">Baseline features on the left</span> - <span class="mv-text">Our multi-view features on the right</span>.
-      </p>
-
-    </div>
-    <br>
 
 </section>
 <!-- End teaser video -->
