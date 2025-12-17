@@ -609,8 +609,66 @@ code {
 
 /* Mobile Responsive Improvements */
 @media screen and (max-width: 768px) {
+  /* Hide Fern and Pikachu on mobile - keep Kitchen and Aloe */
+  .video-scene-column:nth-child(1),
+  .video-scene-column:nth-child(4) {
+    display: none !important;
+  }
+  
+  /* Video comparison grid for mobile - 2x2 layout */
+  .video-comparison-grid {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    flex-wrap: wrap !important;
+    gap: 0 !important;
+    display: flex !important;
+  }
+  
+  .video-scene-column {
+    padding: 0.15rem !important;
+    flex: 0 0 50% !important;
+    width: 50% !important;
+    max-width: 50% !important;
+  }
+  
+  .video-scene-column.column.is-narrow {
+    flex: 0 0 50% !important;
+    width: 50% !important;
+  }
+  
+  .video-pair-spacing {
+    margin-bottom: 0.2rem !important;
+  }
+  
+  .video-pair-spacing:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+  .video-compare-container {
+    width: 75% !important;
+    max-width: 75% !important;
+  }
+  
   .hero-body {
-    padding: 2rem 1rem;
+    padding: 1rem 0.25rem !important;
+  }
+  
+  .teaser .hero-body {
+    padding: 0.5rem 0.25rem !important;
+  }
+  
+  .teaser .content {
+    padding: 0 !important;
+  }
+  
+  .video-comparison-grid {
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Make subtitle smaller on mobile */
+  .subtitle.mt-4 {
+    font-size: 0.8rem !important;
+    margin-top: 0.5rem !important;
   }
   
   .publication-header .hero-body {
@@ -657,11 +715,17 @@ code {
   }
   
   .teaser .hero-body {
-    padding: 1rem;
+    padding: 1rem 0.5rem;
   }
   
   .content.has-text-justified {
     font-size: 1rem;
+  }
+  
+  /* Adjust subtitle text for mobile */
+  .subtitle.mt-4 {
+    font-size: 0.9rem;
+    padding: 0 0.5rem;
   }
 }
 
@@ -767,6 +831,15 @@ a:focus {
   position: relative;
   display: block;
   line-height: 0;
+}
+
+/* Default spacing between original and comparison videos */
+.video-pair-spacing {
+  margin-bottom: 1.5rem;
+}
+
+.video-pair-spacing:last-child {
+  margin-bottom: 0;
 }
 
 .video {

@@ -374,17 +374,17 @@
       </div> -->
 
       <!-- Four-column layout: original videos and feature comparisons -->
-      <div class="columns is-centered is-vcentered" style="margin-top: 2rem;">
+      <div class="columns is-centered is-vcentered video-comparison-grid" style="margin-top: 2rem;">
         <!-- Column 1: Fern Original + Feature Comparison -->
-        <div class="column is-narrow">
+        <div class="column is-narrow video-scene-column">
           <!-- Original Video -->
-          <div style="margin-bottom: 1.5rem;">
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="fernOriginalDiv">
               <video class="video" id="fernOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_fern_original.mp4"></video>
             </div>
           </div>
           <!-- Feature Comparison -->
-          <div>
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="fernDiv">
               <video class="video" id="fern" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_fern_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
               <canvas height=0 class="videoMerge" id="fernMerge"></canvas>
@@ -393,15 +393,15 @@
         </div>
 
         <!-- Column 2: Kitchen Original + Feature Comparison -->
-        <div class="column is-narrow">
+        <div class="column is-narrow video-scene-column">
           <!-- Original Video -->
-          <div style="margin-bottom: 1.5rem;">
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="kitchenOriginalDiv">
               <video class="video" id="kitchenOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_kitchen_original.mp4"></video>
             </div>
           </div>
           <!-- Feature Comparison -->
-          <div>
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="kitchenDiv">
               <video class="video" id="kitchen" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_kitchen_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
               <canvas height=0 class="videoMerge" id="kitchenMerge"></canvas>
@@ -410,15 +410,15 @@
         </div>
 
         <!-- Column 3: Aloe Original + Feature Comparison -->
-        <div class="column is-narrow">
+        <div class="column is-narrow video-scene-column">
           <!-- Original Video -->
-          <div style="margin-bottom: 1.5rem;">
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="aloeOriginalDiv">
               <video class="video" id="aloeOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_aloe_original.mp4"></video>
             </div>
           </div>
           <!-- Feature Comparison -->
-          <div>
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="aloeDiv">
               <video class="video" id="aloe" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_aloe_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
               <canvas height=0 class="videoMerge" id="aloeMerge"></canvas>
@@ -427,15 +427,15 @@
         </div>
 
         <!-- Column 4: Pikachu Original + Feature Comparison -->
-        <div class="column is-narrow">
+        <div class="column is-narrow video-scene-column">
           <!-- Original Video -->
-          <div style="margin-bottom: 1.5rem;">
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="pikachuOriginalDiv">
               <video class="video" id="pikachuOriginal" loop playsinline autoPlay muted src="static/images/compare/original/dinov2_vits14_pikachu_original.mp4"></video>
             </div>
           </div>
           <!-- Feature Comparison -->
-          <div>
+          <div class="video-pair-spacing">
             <div class="video-compare-container" id="pikachuDiv">
               <video class="video" id="pikachu" loop playsinline autoPlay muted src="static/images/compare/dinov2/dinov2_vits14_pikachu_base_vs_mv_shared_pca.mp4" onplay="resizeAndPlay(this)"></video>
               <canvas height=0 class="videoMerge" id="pikachuMerge"></canvas>
@@ -529,8 +529,58 @@ As leading examples, we show surface normal estimation and multi-view segmentati
 
     <!-- Block 3 -->
     <div class="content has-text-centered">
-      <h2 class="title is-3">3D Structure Embedding</h2>
-      <figure class="image">
+      <h2 class="title is-3">How is Structure Embedded?</h2>
+      <div class="container has-text-centered">
+      <div id="results-carousel" class="carousel results-carousel">
+       <div class="item">
+      <!-- Garden -->
+      <div style="margin-bottom: 3rem;">
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <p class="subtitle is-6"><strong>MV-DINOv2 Features</strong></p>
+            <figure class="image is-inline-block">
+              <img src="static/images/delta/garden_merged_3d_features.png" alt="Garden merged 3D features" loading="lazy"  style="max-width: 300px;"/>
+            </figure>
+          </div>
+          <div class="column is-half">
+            <p class="subtitle is-6"><strong>Delta from Baseline</strong></p>
+            <figure class="image is-inline-block">
+              <img src="static/images/delta/garden_delta_pca.png" alt="Garden delta PCA" loading="lazy"  style="max-width: 300px;"/>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+      </div>
+      <div class="item">
+      <!-- Pikachu -->
+      <div>
+        <div class="columns is-centered">
+          <div class="column is-half">
+            <p class="subtitle is-6"><strong>MV-DINOv2 Features</strong></p>
+            <figure class="image is-inline-block">
+              <img src="static/images/delta/pikachu_merged_3d_features.png" alt="Pikachu merged 3D features" loading="lazy"  style="max-width: 300px;"/>
+            </figure>
+          </div>
+          <div class="column is-half">
+            <p class="subtitle is-6"><strong>Delta from Baseline</strong></p>
+            <figure class="image is-inline-block">
+              <img src="static/images/delta/pikachu_delta_pca.png" alt="Pikachu delta PCA" loading="lazy"  style="max-width: 300px;"/>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+      <p class="subtitle mt-3 has-text-left">
+        <span style="display: block; margin-bottom: 0.5rem;"><strong style="color: #3273dc;">Left:</strong> PCA visualization of MV-DINOv2 features showing clear semantic structure.</span>
+        <span style="display: block; margin-top: 0.5rem;"><strong style="color: #3273dc;">Right:</strong> PCA visualization of the difference between MV-DINOv2 and the base model's features, revealing a strong 3D positional pattern—indicating the model encodes geometric information while preserving semantic space.</span>
+      </p>
+</div>
+
+
+      <!-- <figure class="image">
         <img src="static/images/delta_dino.png"
             style="max-width: 400px; margin-left: auto; margin-right: auto;"
              alt="Third research result visualization"
@@ -540,7 +590,7 @@ As leading examples, we show surface normal estimation and multi-view segmentati
       <p class="subtitle mt-3 has-text-left">
           <strong>Left:</strong> PCA visualization of MV-DINOv2 features showing clear semantic structure across scenes.
           <br><strong>Right:</strong> PCA visualization of the difference between MV-DINOv2 and the base model’s features, revealing a strong 3D positional pattern - indicating that the model encodes geometric information while preserving the base model’s semantic space.
-      </p>
+      </p> -->
     </div>
 
     <hr>
@@ -556,7 +606,38 @@ As leading examples, we show surface normal estimation and multi-view segmentati
       <p class="subtitle mt-3 has-text-left">
 Our method delivers consistently stronger multi-view feature consistency across datasets and foundation models, while remaining closely aligned with each model’s original representation.      </p>
     </div>
+
+    <hr>
+
+    <!-- Block 5 -->
+    <div class="content has-text-centered">
+      <h2 class="title is-3">Applications</h2>
+      <h3 class="title is-4">Surface Normal Estimation</h3>
+      <figure class="image">
+        <img src="static/images/normals.png"
+             alt="Fourth research result visualization"
+             loading="lazy">
+      </figure>
+      <p class="subtitle mt-3 has-text-left">
+        By simple feature probing we produce surface normals that are globally consistent rather than just view-dependent. This proves our representation understands the underlying structure, keeping surface orientations aligned across all viewpoints without any additional training.    
+      </p>
+
+      <br>
+      <h3 class="title is-4">Consistent Multi-View Segmentation</h3>
+        <figure class="image">
+        <img src="static/images/segmentation.png"
+             style="max-width: 600px; margin-left: auto; margin-right: auto;"
+             alt="Fourth research result visualization"
+             loading="lazy">
+      </figure>
+      <p class="subtitle mt-3 has-text-left">
+        A single click in the first view instantly yields consistent semantic segmentation masks across all views with MV-SAM, whereas standard SAM fails to maintain such consistency.      
+      </p>
+
+    </div>
+
   </div>
+  
 </section>
 
 <!--&lt;!&ndash; Image carousel &ndash;&gt;-->
