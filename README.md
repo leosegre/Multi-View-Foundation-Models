@@ -34,6 +34,11 @@ Download the Generalization dataset from this [link](https://drive.google.com/fi
 
 For the ScanNet++ dataset - each new user needs to submit application to request access to ScanNet++ from its [official website](https://scannetpp.mlsg.cit.tum.de/scannetpp/). According to the Terms of Use of ScanNet++, we can only share the preprocessed data with people who have also signed the Terms of Use and been granted access to ScanNet++. After you submit your application and get approved from the ScanNet++ team, you can Forward the approval email to leosegre@mail.tau.ac.il and then we will share our preprocessed data with you directly.
 
+### Extact Features
+To extract features from images using a specific foundation model, run the following command. For example, for DINOv2:
+```bash
+python test/extract_features.py --exp_name dinov2_reg --colmap_path {path/to/data/root/dir} --exp_directory experiments --scene pikachu --load_pretrained
+```
 
 ### Training
 Run the relevant experiment, for example for DINOv2:
@@ -50,7 +55,7 @@ python train/train_dino_nopose.py --exp_name {exp_name} --colmap_path {path/to/d
 python test/test_3d.py --exp_directory {exp_dir} --exp_name {exp_name} --colmap_path {path/to/data/root/dir} --results_dir {path/to/results/dir} --compare_to_base --fit3d
 ```
 
-To test on our pretrained models, use the below command (You can change the model type by changing the exp_name).
+To test on our pretrained models, use the below command (You can change the model type by changing the exp_name to {dinov2_reg, dinov2_reg_no_plucker, dinov3, clip, sam}).
 ```bash
 python test/test_3d.py --load_pretrained --exp_directory {exp_dir} --exp_name dinov2_reg --colmap_path {path/to/data/root/dir} --results_dir {path/to/results/dir} --compare_to_base --fit3d
 ```

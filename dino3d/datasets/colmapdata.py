@@ -128,6 +128,7 @@ class COLMAPScene(torch.utils.data.Dataset):
         cross_plucker=False,
         clip_norm=False,
         limit_corrs=None,
+        skip_corrs=False,
         **kwargs
     ):
         print(f"Loading COLMAP scene from '{colmap_root}'")
@@ -149,7 +150,7 @@ class COLMAPScene(torch.utils.data.Dataset):
         self.cross_plucker = cross_plucker
         # Normalize and resize to DINO input size
         self.im_transform_ops = get_tuple_transform_ops(normalize=True, resize=image_size, clip_norm=clip_norm)
-
+        self.skip_corrs = skip_corrs
 
         # Load COLMAP cameras and images from .bin files
         self.cameras = read_cameras_binary(os.path.join(colmap_root, 'cameras.bin'))
@@ -213,39 +214,57 @@ class COLMAPScene(torch.utils.data.Dataset):
             for _ in range(self.__len__())
         ])
 
-        if limit_corrs == None:
-            # Check that all matches have at least max_correspondences
-            chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
-            while not np.all(chosen_idx_ok):
-                for idx in np.argwhere(~chosen_idx_ok).flatten():
-                    num_matches = 0
-                    chosen_ids = self.image_ids[self.chosen_idx[idx]]
-                    for id1, id2 in combinations(chosen_ids, 2):
-                        num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
-                        if num_matches >= self.max_correspondences:
-                            break
-                    if num_matches >= self.max_correspondences:
-                        chosen_idx_ok[idx] = True
-                    else:
-                        # If not ok, resample
-                        self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
-        else:
-            # Check that all matches have at most limit_corrs
-            chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
-            while not np.all(chosen_idx_ok):
-                for idx in np.argwhere(~chosen_idx_ok).flatten():
-                    num_matches = 0
-                    chosen_ids = self.image_ids[self.chosen_idx[idx]]
-                    for id1, id2 in combinations(chosen_ids, 2):
-                        num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
-                        if num_matches > limit_corrs:
-                            break
-                    if num_matches <= limit_corrs:
-                        chosen_idx_ok[idx] = True
-                    else:
-                        # If not ok, resample
-                        self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
 
+        if not self.skip_corrs:
+            if limit_corrs == None:
+                # Check that all matches have at least max_correspondences
+                chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
+                while not np.all(chosen_idx_ok):
+                    for idx in np.argwhere(~chosen_idx_ok).flatten():
+                        num_matches = 0
+                        chosen_ids = self.image_ids[self.chosen_idx[idx]]
+                        for id1, id2 in combinations(chosen_ids, 2):
+                            num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
+                            if num_matches >= self.max_correspondences:
+                                break
+                        if num_matches >= self.max_correspondences:
+                            chosen_idx_ok[idx] = True
+                        else:
+                            # If not ok, resample
+                            self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
+            else:
+                # Check that all matches have at most limit_corrs
+                chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
+                while not np.all(chosen_idx_ok):
+                    for idx in np.argwhere(~chosen_idx_ok).flatten():
+                        num_matches = 0
+                        chosen_ids = self.image_ids[self.chosen_idx[idx]]
+                        for id1, id2 in combinations(chosen_ids, 2):
+                            num_matches += self.get_num_matches_pair(id1, id2, matches_mapping)
+                            if num_matches > limit_corrs:
+                                break
+                        if num_matches <= limit_corrs:
+                            chosen_idx_ok[idx] = True
+                        else:
+                            # If not ok, resample
+                            self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
+        else:
+            # Check if the images exists, if not choose other images.
+            chosen_idx_ok = np.zeros((self.__len__(),), dtype=bool)
+            while not np.all(chosen_idx_ok):
+                for idx in np.argwhere(~chosen_idx_ok).flatten():
+                    chosen_ids = self.image_ids[self.chosen_idx[idx]]
+                    all_exist = True
+                    for id1 in chosen_ids:
+                        image_path_1 = os.path.join(self.image_dir, self.images[id1]['name'])
+                        if not os.path.exists(image_path_1):
+                            all_exist = False
+                            break
+                    if all_exist:
+                        chosen_idx_ok[idx] = True
+                    else:
+                        # If not ok, resample
+                        self.chosen_idx[idx] = np.random.choice(len(self.image_list), size=self.N, replace=False)
 
     def _build_K(self, cam):
         # Build 3x3 intrinsics matrix from COLMAP camera parameters
@@ -543,10 +562,14 @@ class COLMAPScene(torch.utils.data.Dataset):
 
         # Randomly sample N unique image indices
 
-        if self.load_corrs:
-            pairwise_corr, chosen_ids = self.get_filtered_corr(idx)
+        if self.skip_corrs:
+            pairwise_corr = torch.empty((0, 6))
+            chosen_ids = self.image_ids[self.chosen_idx[idx]]
         else:
-            pairwise_corr, chosen_ids = self.calc_filtered_corr(idx)
+            if self.load_corrs:
+                pairwise_corr, chosen_ids = self.get_filtered_corr(idx)
+            else:
+                pairwise_corr, chosen_ids = self.calc_filtered_corr(idx)
 
 
         chosen_idx = self.chosen_idx[idx]
@@ -736,6 +759,9 @@ class COLMAPBuilder:
 
                 cameras_file = os.path.join(scene_path, "cameras.bin")
                 images_file = os.path.join(scene_path, "images.bin")
+
+                # print(images_file, cameras_file)
+                # print(os.path.exists(images_file), os.path.exists(cameras_file))
 
                 if not (os.path.exists(cameras_file) and os.path.exists(images_file)):
                     print(f"[WARN] Skipping scene '{scene_name}' due to missing COLMAP files.")
