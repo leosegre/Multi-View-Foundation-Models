@@ -1,8 +1,9 @@
+<a href="https://leosegre.github.io/Multi-View-Foundation-Models/"><img src="https://img.shields.io/static/v1?label=Project&message=Website&color=blue"></a>
+<a href="https://arxiv.org/abs/2512.15708"><img src="https://img.shields.io/badge/arXiv-2512.15708-b31b1b.svg"></a>
 # Multi-View Foundation Models
 
-By *[Or Hirschorn](https://scholar.google.co.il/citations?user=GgFuT_QAAAAJ&hl=iw&oi=ao), *[Leo Segre](https://scholar.google.com/citations?user=A7FWhoIAAAAJ&hl=iw) and [Shai Avidan](https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ)  </p>
+This repo is the official implementation of [Multi-View Foundation Models](https://arxiv.org/abs/2512.15708), by [Leo Segre](https://leosegre.github.io/)\*, [Or Hirschorn](https://orhir.github.io/)\* and [Shai Avidan](https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ)  </p>
 
-This repo is the official implementation of "[Multi-View Foundation Models](https://arxiv.org/pdf/TBD.pdf)" (Link TBD).
 
 <p align="center">
 <img src="images/framework.jpg" width="1200">
@@ -12,7 +13,7 @@ This repo is the official implementation of "[Multi-View Foundation Models](http
 We introduce a novel framework that transforms existing 2D Foundation Models (like DINO, SAM, and CLIP) into Multi-View Foundation Models. Current 2D models process images independently, leading to inconsistent feature representations for the same 3D point viewed from multiple camera angles.
 
 ## Setup/Install
-We recommend using Anaconda or Miniconda. To setup the environment, follow the instructions below.
+We recommend using Anaconda or Miniconda. To set up the environment, follow the instructions below.
 ### Create environment
 ```bash
 conda create --name multi_view_foundation_models -y python=3.10
@@ -69,5 +70,13 @@ python test/test_3d_nopose.py --load_pretrained --exp_directory {exp_dir} --exp_
 ## BibTeX
 If you find our models useful, please consider citing our paper!
 ```
-TBD
+@article{MultiViewFoundationModels2025,
+      title={Multi-View Foundation Models}, 
+      author={Leo Segre and Or Hirschorn and Shai Avidan},
+      year={2025},
+      eprint={2512.15708},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2512.15708}, 
+}
 ```
