@@ -46,9 +46,9 @@ Run the relevant experiment, for example for DINOv2:
 ```bash
 python train/train_dino.py --exp_name {exp_name} --colmap_path {path/to/data/root/dir} --exp_directory {path/to/exp/dir} --config_name dinov2_reg.yaml
 ```
-If you don't have the camera parameters, try our the no-pose version:
+If you don't have the camera parameters, use the regular training script with the no-plucker config (the dataloader will automatically use dummy poses):
 ```bash
-python train/train_dino_nopose.py --exp_name {exp_name} --colmap_path {path/to/data/root/dir} --exp_directory {path/to/exp/dir} --config_name dinov2_reg_no_plucker.yaml
+python train/train_dino.py --exp_name {exp_name} --colmap_path {path/to/data/root/dir} --exp_directory {path/to/exp/dir} --config_name dino_v2_reg_no_plucker.yaml
 ```
 
 ### Testing
@@ -61,9 +61,9 @@ To test on our pretrained models, use the below command (You can change the mode
 python test/test_3d.py --load_pretrained --exp_directory {exp_dir} --exp_name dinov2_reg --colmap_path {path/to/data/root/dir} --results_dir {path/to/results/dir} --compare_to_base --fit3d
 ```
 
-If you don't have the camera parameters, try our the no-pose version:
+If you don't have the camera parameters, use the standard test script with the no-plucker experiment name:
 ```bash
-python test/test_3d_nopose.py --load_pretrained --exp_directory {exp_dir} --exp_name dinov2_reg_no_plucker --colmap_path {path/to/data/root/dir} --results_dir {path/to/results/dir} --compare_to_base --fit3d
+python test/test_3d.py --load_pretrained --exp_directory {exp_dir} --exp_name dinov2_reg_no_plucker --colmap_path {path/to/data/root/dir} --results_dir {path/to/results/dir} --compare_to_base --fit3d
 ```
 
 
