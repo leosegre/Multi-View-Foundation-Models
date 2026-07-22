@@ -3,9 +3,7 @@
 <a href="https://eccv.ecva.net/"><img src="https://img.shields.io/badge/ECCV-2026-6f42c1.svg"></a>
 # Multi-View Foundation Models
 
-<hr>
 <h2>ECCV 2026</h2>
-<hr>
 
 This repo is the official implementation of [Multi-View Foundation Models](https://arxiv.org/abs/2512.15708), by [Leo Segre](https://leosegre.github.io/)\*, [Or Hirschorn](https://orhir.github.io/)\* and [Shai Avidan](https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ)  </p>
 
