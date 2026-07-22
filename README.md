@@ -4,7 +4,7 @@
 # Multi-View Foundation Models
 
 <hr>
-##ECCV 2026
+<h2>ECCV 2026</h2>
 <hr>
 
 This repo is the official implementation of [Multi-View Foundation Models](https://arxiv.org/abs/2512.15708), by [Leo Segre](https://leosegre.github.io/)\*, [Or Hirschorn](https://orhir.github.io/)\* and [Shai Avidan](https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ)  </p>
