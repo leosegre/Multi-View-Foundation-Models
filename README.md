@@ -1,6 +1,11 @@
 <a href="https://leosegre.github.io/Multi-View-Foundation-Models/"><img src="https://img.shields.io/static/v1?label=Project&message=Website&color=blue"></a>
 <a href="https://arxiv.org/abs/2512.15708"><img src="https://img.shields.io/badge/arXiv-2512.15708-b31b1b.svg"></a>
+<a href="https://eccv.ecva.net/"><img src="https://img.shields.io/badge/ECCV-2026-6f42c1.svg"></a>
 # Multi-View Foundation Models
+
+<hr>
+##ECCV 2026
+<hr>
 
 This repo is the official implementation of [Multi-View Foundation Models](https://arxiv.org/abs/2512.15708), by [Leo Segre](https://leosegre.github.io/)\*, [Or Hirschorn](https://orhir.github.io/)\* and [Shai Avidan](https://scholar.google.co.il/citations?hl=iw&user=hpItE1QAAAAJ)  </p>
 
